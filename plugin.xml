@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" 
+    xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-watchdog" version="1.0.0">
+    <name>cordova-plugin-watchdog</name>
+    <description>Keep your Apache Cordova App always running on top</description>
+    <author>Brian Mayo</author>
+    <license>MIT</license>
+    <keywords>cordova,android,watchdog,service</keywords>
+    <engines>
+        <engine name="cordova" version=">=5.0.0" />
+    </engines>
+    <js-module src="www/main.js" name="cordova-plugin-watchdog">
+        <clobbers target="watchdog" />
+    </js-module>
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="cordova-plugin-watchdog">
+                <param name="android-package" value="io.b1tdust.cordova.watchdog" />
+                <param name="onload" value="true" />
+            </feature>
+            <!-- Keep only one instance of your app -->
+            <preference name="AndroidLaunchMode" value="singleInstance"/>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.GET_TASKS" />
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <service android:name="io.b1tdust.cordova.watchdog.Service" android:enabled="true" android:exported="false"/>
+        </config-file>
+
+        <source-file src="src/android/Plugin.java" target-dir="src/io/b1tdust/cordova/watchdog" />
+        <source-file src="src/android/Service.java" target-dir="src/io/b1tdust/cordova/watchdog" />
+    </platform>
+</plugin>
